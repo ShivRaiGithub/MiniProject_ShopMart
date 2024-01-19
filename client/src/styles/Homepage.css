@@ -3,7 +3,7 @@
 }
 
 .home-page h1 {
-  color: gray;
+  color: rgb(164, 255, 146);
   font-family: "Playfair Display", serif;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .home-page .card-price {
-  color: green;
+  color: rgb(22, 138, 173);
   font-weight: bold;
 }
 .home-page button {
@@ -67,7 +67,7 @@ filters
 }
 
 .filters button {
-  background-color: black;
+  background-color: rgb(24, 78, 119);
   width: 100%;
   border: none;
   border-radius: 0;
@@ -75,7 +75,7 @@ filters
 }
 
 .loadmore {
-  color: green;
+  color: rgb(26, 117, 159);
   font-weight: bold;
   font-size: 20px !important;
 }

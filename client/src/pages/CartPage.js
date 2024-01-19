@@ -3,7 +3,7 @@ import Layout from "./../components/Layout/Layout";
 import { useCart } from "../context/cart";
 import { useAuth } from "../context/auth";
 import { useNavigate } from "react-router-dom";
-import DropIn from "braintree-web-drop-in-react";
+// import DropIn from "braintree-web-drop-in-react";
 import { AiFillWarning } from "react-icons/ai";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -13,8 +13,9 @@ const CartPage = () => {
   const [auth, setAuth] = useAuth();
   const [cart, setCart] = useCart();
   const [clientToken, setClientToken] = useState("");
-  const [instance, setInstance] = useState("");
+  // const [instance, setInstance] = useState("");
   const [loading, setLoading] = useState(false);
+  const [checkOut, setCheckOut] = useState(false);
   const navigate = useNavigate();
 
   //total price
@@ -55,20 +56,26 @@ const CartPage = () => {
     getToken();
   }, [auth?.token]);
 
+
   //handle payments
   const handlePayment = async () => {
     try {
       setLoading(true);
-      const { nonce } = await instance.requestPaymentMethod();
+      // const { nonce } = await instance.requestPaymentMethod();
+      // const { data } = await axios.post("/api/v1/product/braintree/payment", {
+      //   nonce,
+      //   cart,
+      // });
       const { data } = await axios.post("/api/v1/product/braintree/payment", {
-        nonce,
         cart,
       });
+      setCheckOut(true);
       setLoading(false);
       localStorage.removeItem("cart");
       setCart([]);
-      navigate("/dashboard/user/orders");
-      toast.success("Payment Completed Successfully ");
+      // navigate("/dashboard/user/orders");
+      toast.success("Order Placed Successfully ");
+      setCheckOut(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -85,9 +92,8 @@ const CartPage = () => {
                 : `Hello  ${auth?.token && auth?.user?.name}`}
               <p className="text-center">
                 {cart?.length
-                  ? `You Have ${cart.length} items in your cart ${
-                      auth?.token ? "" : "please login to checkout !"
-                    }`
+                  ? `You Have ${cart.length} items in your cart ${auth?.token ? "" : "please login to checkout !"
+                  }`
                   : " Your Cart Is Empty"}
               </p>
             </h1>
@@ -169,7 +175,7 @@ const CartPage = () => {
                   ""
                 ) : (
                   <>
-                    <DropIn
+                    {/* <DropIn
                       options={{
                         authorization: clientToken,
                         paypal: {
@@ -177,14 +183,22 @@ const CartPage = () => {
                         },
                       }}
                       onInstance={(instance) => setInstance(instance)}
-                    />
-
+                    /> */}
+                    {/* 
                     <button
-                      className="btn btn-primary"
-                      onClick={handlePayment}
-                      disabled={loading || !instance || !auth?.user?.address}
+                      className="btn btn-primary cursor-pointer"
+                      // onClick={handlePayment}
+                      onClick={temp}
+                      disabled={loading || !auth?.user?.address}
                     >
-                      {loading ? "Processing ...." : "Make Payment"}
+                      Click
+                      {loading ? "Processing ...." : "Place Order (Cash on Delivery )"}
+                    </button> */}
+                    <button
+                      className={checkOut ? 'btn btn-success cursor-pointer' : 'btn btn-primary'}
+                      onClick={handlePayment}
+                    >
+                      {checkOut?  "Order Placed" :"Place Order( Pay on Delivery)" }
                     </button>
                   </>
                 )}
